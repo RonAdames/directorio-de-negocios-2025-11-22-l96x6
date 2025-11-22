@@ -131,9 +131,10 @@
         }
 
         #map {
-            height: 600px;
+            height: 400px;
             border-radius: 1rem;
             margin-bottom: 2rem;
+            width: 100%;
         }
 
         .business-card {
@@ -152,15 +153,15 @@
 
         .search-container {
             position: relative;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .search-input {
             width: 100%;
-            padding: 0.75rem 1rem;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
             border: 2px solid #E5E7EB;
             border-radius: 0.5rem;
-            font-size: 1rem;
+            font-size: 0.95rem;
             transition: all 0.3s ease-out;
         }
 
@@ -168,6 +169,15 @@
             outline: none;
             border-color: #5B4BFF;
             box-shadow: 0 0 0 3px rgba(91, 75, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+            pointer-events: none;
         }
 
         .category-filter {
@@ -178,7 +188,7 @@
         }
 
         .category-btn {
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.8rem;
             border: 2px solid #E5E7EB;
             border-radius: 9999px;
             background-color: white;
@@ -186,6 +196,7 @@
             cursor: pointer;
             transition: all 0.3s ease-out;
             font-weight: 500;
+            font-size: 0.875rem;
         }
 
         .category-btn.active {
@@ -200,7 +211,7 @@
 
         .business-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.5rem;
         }
 
@@ -227,6 +238,7 @@
             cursor: pointer;
             transition: all 0.3s ease-out;
             font-weight: 500;
+            font-size: 0.875rem;
         }
 
         .filter-select:focus {
@@ -240,6 +252,22 @@
             gap: 1rem;
             flex-wrap: wrap;
             margin-bottom: 1rem;
+        }
+
+        .search-filters-section {
+            background-color: #f8f9ff;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filters-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #6B7280;
+            margin-bottom: 0.5rem;
+            display: block;
         }
     </style>
 </head>
@@ -312,47 +340,48 @@
                 </p>
             </div>
 
-            <!-- Map -->
-            <div id="map" class="rounded-lg shadow-lg mb-8"></div>
-
             <!-- Search and Filters -->
-            <div class="bg-secondary p-6 md:p-8 rounded-lg mb-8">
-                <div class="search-container">
+            <div class="search-filters-section">
+                <div class="search-container mb-3">
+                    <i class="fas fa-search search-icon"></i>
                     <input 
                         type="text" 
                         id="searchInput" 
                         class="search-input" 
-                        placeholder="Busca por nombre de negocio o categoría..."
+                        placeholder="Busca por nombre o categoría..."
                     >
                 </div>
 
                 <div class="filter-row">
-                    <div class="flex-1 min-w-[200px]">
-                        <p class="text-sm font-semibold text-gray-700 mb-2">Provincia:</p>
+                    <div class="flex-1 min-w-[150px]">
+                        <span class="filters-label">Provincia</span>
                         <select id="provinceFilter" class="filter-select w-full">
-                            <option value="">Todas las provincias</option>
+                            <option value="">Todas</option>
                         </select>
                     </div>
-                    <div class="flex-1 min-w-[200px]">
-                        <p class="text-sm font-semibold text-gray-700 mb-2">Municipio:</p>
+                    <div class="flex-1 min-w-[150px]">
+                        <span class="filters-label">Municipio</span>
                         <select id="municipalityFilter" class="filter-select w-full">
-                            <option value="">Todos los municipios</option>
+                            <option value="">Todos</option>
                         </select>
                     </div>
                 </div>
 
                 <div>
-                    <p class="text-sm font-semibold text-gray-700 mb-3">Filtrar por Categoría:</p>
+                    <span class="filters-label">Categorías</span>
                     <div class="category-filter" id="categoryFilter">
                         <button class="category-btn active" data-category="all">Todos</button>
                     </div>
                 </div>
             </div>
 
+            <!-- Map -->
+            <div id="map" class="rounded-lg shadow-lg mb-8"></div>
+
             <!-- Loading State -->
-            <div id="loadingState" class="text-center py-8">
-                <div class="loading-spinner mx-auto"></div>
-                <p class="text-gray-600 mt-4">Cargando negocios...</p>
+            <div id="loadingState" class="text-center py-12">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <p class="text-gray-600">Cargando negocios...</p>
             </div>
 
             <!-- Business List -->
@@ -929,6 +958,11 @@
                 attribution: '© OpenStreetMap contributors',
                 maxZoom: 19
             }).addTo(map);
+            
+            // Force map to refresh after initialization
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 100);
         }
 
         // Load businesses from JSON
@@ -1011,7 +1045,7 @@
             const municipalitySelect = document.getElementById('municipalityFilter');
             const selectedProvince = provinceSelect.value;
 
-            municipalitySelect.innerHTML = '<option value="">Todos los municipios</option>';
+            municipalitySelect.innerHTML = '<option value="">Todos</option>';
 
             if (selectedProvince && municipalitiesByProvince[selectedProvince]) {
                 const municipalities = Array.from(municipalitiesByProvince[selectedProvince]).sort();
@@ -1087,94 +1121,4 @@
                 if (business.whatsapp_link) contactHTML += `<p class="text-sm"><strong>WhatsApp:</strong> <a href="${business.whatsapp_link}" target="_blank" class="text-primary hover:underline">Contactar</a></p>`;
                 if (business.facebook) contactHTML += `<p class="text-sm"><strong>Facebook:</strong> <a href="${business.facebook}" target="_blank" class="text-primary hover:underline">Visitar</a></p>`;
                 if (business.instagram) contactHTML += `<p class="text-sm"><strong>Instagram:</strong> <a href="${business.instagram}" target="_blank" class="text-primary hover:underline">Visitar</a></p>`;
-                if (business.linkedin) contactHTML += `<p class="text-sm"><strong>LinkedIn:</strong> <a href="${business.linkedin}" target="_blank" class="text-primary hover:underline">Visitar</a></p>`;
-
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-3">
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-900">${business.name || 'Sin nombre'}</h3>
-                            <p class="text-sm text-gray-600">${business.category || 'Sin categoría'}</p>
-                        </div>
-                    </div>
-                    <p class="text-sm text-gray-700 mb-3"><i class="fas fa-map-marker-alt text-primary mr-2"></i>${business.full_address || 'Sin dirección'}</p>
-                    ${business.municipality ? `<p class="text-sm text-gray-600 mb-1"><strong>Municipio:</strong> ${business.municipality}</p>` : ''}
-                    ${business.province ? `<p class="text-sm text-gray-600 mb-1"><strong>Provincia:</strong> ${business.province}</p>` : ''}
-                    ${business.rating ? `<p class="text-sm text-gray-600 mb-3"><strong>Calificación:</strong> ${business.rating}⭐</p>` : ''}
-                    <div class="space-y-1 text-sm">
-                        ${contactHTML}
-                    </div>
-                `;
-                
-                businessList.appendChild(card);
-            });
-        }
-
-        // Display markers on map
-        function displayMarkersOnMap() {
-            clearMarkers();
-            filteredBusinesses.forEach(business => {
-                if (business.latitude && business.longitude) {
-                    const marker = L.marker([business.latitude, business.longitude]).addTo(map);
-                    let popupContactHTML = '';
-                    if (business.phone) popupContactHTML += `<p class="text-xs mb-1"><strong>Tel:</strong> <a href="tel:${business.phone}" class="text-primary">${business.phone}</a></p>`;
-                    if (business.email) popupContactHTML += `<p class="text-xs mb-1"><strong>Email:</strong> <a href="mailto:${business.email}" class="text-primary">${business.email}</a></p>`;
-                    if (business.whatsapp_link) popupContactHTML += `<p class="text-xs mb-1"><strong>WhatsApp:</strong> <a href="${business.whatsapp_link}" target="_blank" class="text-primary">Contactar</a></p>`;
-                    
-                    const popupContent = `
-                        <div class="p-2">
-                            <h4 class="font-bold text-primary mb-1">${business.name || 'Sin nombre'}</h4>
-                            <p class="text-xs text-gray-600 mb-2">${business.category || 'Sin categoría'}</p>
-                            <p class="text-xs mb-1"><strong>Dirección:</strong> ${business.full_address || 'Sin dirección'}</p>
-                            ${popupContactHTML}
-                            ${business.rating ? `<p class="text-xs"><strong>Calificación:</strong> ${business.rating}⭐</p>` : ''}
-                        </div>
-                    `;
-                    marker.bindPopup(popupContent);
-                    markers.push(marker);
-                }
-            });
-        }
-
-        // Clear all markers from map
-        function clearMarkers() {
-            markers.forEach(marker => map.removeLayer(marker));
-            markers = [];
-        }
-
-        // Update markers based on filtered businesses
-        function updateMarkersOnMap() {
-            displayMarkersOnMap();
-        }
-
-        // Add event listeners
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            searchBusinesses(e.target.value);
-        });
-
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
-            document.querySelector('.mobile-menu').classList.toggle('hidden');
-        });
-
-        // FAQ accordion
-        document.querySelectorAll('.faq-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const answer = this.querySelector('.faq-answer');
-                const icon = this.querySelector('.faq-icon');
-                
-                document.querySelectorAll('.faq-item').forEach(otherItem => {
-                    if (otherItem !== this) {
-                        otherItem.querySelector('.faq-answer').classList.add('hidden');
-                        otherItem.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
-                    }
-                });
-                
-                answer.classList.toggle('hidden');
-                icon.style.transform = answer.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
-            });
-        });
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            initMap();
-            loadBusinesses();
+                if (business.linkedin) contactHTML += `<p class="text-sm"><strong>LinkedIn:</strong> <a href="${business.linkedin}" target="_blank" class="text-primary hover:underline">Visitar</a></p>
