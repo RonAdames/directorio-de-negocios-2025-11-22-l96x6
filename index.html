@@ -217,6 +217,30 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 0.5rem;
+            background-color: white;
+            color: #6B7280;
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            font-weight: 500;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #5B4BFF;
+            box-shadow: 0 0 0 3px rgba(91, 75, 255, 0.1);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body class="smooth-scroll">
@@ -298,8 +322,23 @@
                         type="text" 
                         id="searchInput" 
                         class="search-input" 
-                        placeholder="Busca por nombre de negocio, categoría o ubicación..."
+                        placeholder="Busca por nombre de negocio o categoría..."
                     >
+                </div>
+
+                <div class="filter-row">
+                    <div class="flex-1 min-w-[200px]">
+                        <p class="text-sm font-semibold text-gray-700 mb-2">Provincia:</p>
+                        <select id="provinceFilter" class="filter-select w-full">
+                            <option value="">Todas las provincias</option>
+                        </select>
+                    </div>
+                    <div class="flex-1 min-w-[200px]">
+                        <p class="text-sm font-semibold text-gray-700 mb-2">Municipio:</p>
+                        <select id="municipalityFilter" class="filter-select w-full">
+                            <option value="">Todos los municipios</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div>
@@ -879,6 +918,9 @@
         let filteredBusinesses = [];
         let markers = [];
         let allCategories = new Set();
+        let allProvinces = new Set();
+        let allMunicipalities = new Set();
+        let municipalitiesByProvince = {};
 
         // Initialize map
         function initMap() {
@@ -896,15 +938,26 @@
                 if (!response.ok) throw new Error('Failed to load data');
                 businesses = await response.json();
                 
-                // Extract unique categories
+                // Extract unique categories, provinces, and municipalities
                 businesses.forEach(business => {
                     if (business.category) {
                         allCategories.add(business.category);
                     }
+                    if (business.province) {
+                        allProvinces.add(business.province);
+                        if (!municipalitiesByProvince[business.province]) {
+                            municipalitiesByProvince[business.province] = new Set();
+                        }
+                        if (business.municipality) {
+                            municipalitiesByProvince[business.province].add(business.municipality);
+                            allMunicipalities.add(business.municipality);
+                        }
+                    }
                 });
 
-                // Populate category filters
+                // Populate filters
                 populateCategoryFilters();
+                populateProvinceFilters();
                 
                 // Display all businesses
                 filteredBusinesses = [...businesses];
@@ -934,33 +987,78 @@
             });
         }
 
-        // Filter by category
-        function filterByCategory(category, btn) {
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+        // Populate province filter
+        function populateProvinceFilters() {
+            const provinceSelect = document.getElementById('provinceFilter');
+            const provinces = Array.from(allProvinces).sort();
             
-            if (category === 'all') {
-                btn.classList.add('active');
-                filteredBusinesses = [...businesses];
-            } else {
-                btn.classList.add('active');
-                filteredBusinesses = businesses.filter(b => b.category === category);
+            provinces.forEach(province => {
+                const option = document.createElement('option');
+                option.value = province;
+                option.textContent = province;
+                provinceSelect.appendChild(option);
+            });
+
+            provinceSelect.addEventListener('change', () => {
+                updateMunicipalityFilter();
+                applyAllFilters();
+            });
+        }
+
+        // Update municipality filter based on selected province
+        function updateMunicipalityFilter() {
+            const provinceSelect = document.getElementById('provinceFilter');
+            const municipalitySelect = document.getElementById('municipalityFilter');
+            const selectedProvince = provinceSelect.value;
+
+            municipalitySelect.innerHTML = '<option value="">Todos los municipios</option>';
+
+            if (selectedProvince && municipalitiesByProvince[selectedProvince]) {
+                const municipalities = Array.from(municipalitiesByProvince[selectedProvince]).sort();
+                municipalities.forEach(municipality => {
+                    const option = document.createElement('option');
+                    option.value = municipality;
+                    option.textContent = municipality;
+                    municipalitySelect.appendChild(option);
+                });
             }
-            
+
+            municipalitySelect.addEventListener('change', applyAllFilters);
+        }
+
+        // Apply all filters
+        function applyAllFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const selectedProvince = document.getElementById('provinceFilter').value;
+            const selectedMunicipality = document.getElementById('municipalityFilter').value;
+            const selectedCategory = document.querySelector('.category-btn.active')?.dataset.category || 'all';
+
+            filteredBusinesses = businesses.filter(business => {
+                const matchesSearch = !searchTerm || 
+                    (business.name && business.name.toLowerCase().includes(searchTerm)) ||
+                    (business.category && business.category.toLowerCase().includes(searchTerm));
+
+                const matchesProvince = !selectedProvince || business.province === selectedProvince;
+                const matchesMunicipality = !selectedMunicipality || business.municipality === selectedMunicipality;
+                const matchesCategory = selectedCategory === 'all' || business.category === selectedCategory;
+
+                return matchesSearch && matchesProvince && matchesMunicipality && matchesCategory;
+            });
+
             displayBusinesses();
             updateMarkersOnMap();
         }
 
+        // Filter by category
+        function filterByCategory(category, btn) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyAllFilters();
+        }
+
         // Search businesses
         function searchBusinesses(query) {
-            const searchTerm = query.toLowerCase();
-            filteredBusinesses = businesses.filter(business => {
-                return (business.name && business.name.toLowerCase().includes(searchTerm)) ||
-                       (business.category && business.category.toLowerCase().includes(searchTerm)) ||
-                       (business.full_address && business.full_address.toLowerCase().includes(searchTerm)) ||
-                       (business.neighborhood && business.neighborhood.toLowerCase().includes(searchTerm));
-            });
-            displayBusinesses();
-            updateMarkersOnMap();
+            applyAllFilters();
         }
 
         // Display businesses in list
@@ -996,7 +1094,8 @@
                         </div>
                     </div>
                     <p class="text-sm text-gray-700 mb-3"><i class="fas fa-map-marker-alt text-primary mr-2"></i>${business.full_address || 'Sin dirección'}</p>
-                    ${business.neighborhood ? `<p class="text-sm text-gray-600 mb-3"><strong>Barrio:</strong> ${business.neighborhood}</p>` : ''}
+                    ${business.municipality ? `<p class="text-sm text-gray-600 mb-1"><strong>Municipio:</strong> ${business.municipality}</p>` : ''}
+                    ${business.province ? `<p class="text-sm text-gray-600 mb-3"><strong>Provincia:</strong> ${business.province}</p>` : ''}
                     <div class="space-y-1 text-sm">
                         ${contactHTML}
                     </div>
@@ -1012,113 +1111,4 @@
             filteredBusinesses.forEach(business => {
                 if (business.latitude && business.longitude) {
                     const marker = L.marker([business.latitude, business.longitude]).addTo(map);
-                    marker.bindPopup(`
-                        <div class="font-semibold text-gray-900">${business.name || 'Sin nombre'}</div>
-                        <div class="text-sm text-gray-600">${business.category || 'Sin categoría'}</div>
-                        <div class="text-sm text-gray-700 mt-2">${business.full_address || 'Sin dirección'}</div>
-                        ${business.phone ? `<div class="text-sm mt-2"><a href="tel:${business.phone}" class="text-blue-600">Llamar</a></div>` : ''}
-                    `);
-                    markers.push(marker);
-                }
-            });
-
-            // Auto-fit map to markers
-            if (markers.length > 0) {
-                const group = new L.featureGroup(markers);
-                map.fitBounds(group.getBounds().pad(0.1));
-            }
-        }
-
-        // Update markers on map
-        function updateMarkersOnMap() {
-            clearMarkers();
-            displayMarkersOnMap();
-        }
-
-        // Clear markers
-        function clearMarkers() {
-            markers.forEach(marker => map.removeLayer(marker));
-            markers = [];
-        }
-
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize map and load data
-            initMap();
-            loadBusinesses();
-
-            // Mobile Menu Toggle
-            const mobileMenuButton = document.querySelector('header nav .mobile-menu-button');
-            const mobileMenu = document.querySelector('header nav .mobile-menu');
-            
-            if (mobileMenuButton && mobileMenu) {
-                mobileMenuButton.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                    const icon = mobileMenuButton.querySelector('i');
-                    if (icon) {
-                        icon.classList.toggle('fa-bars');
-                        icon.classList.toggle('fa-times');
-                    }
-                });
-
-                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-                mobileMenuLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        mobileMenu.classList.add('hidden');
-                        const icon = mobileMenuButton.querySelector('i');
-                        if (icon) {
-                            icon.classList.remove('fa-times');
-                            icon.classList.add('fa-bars');
-                        }
-                    });
-                });
-            }
-
-            // Search functionality
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.addEventListener('input', (e) => {
-                    searchBusinesses(e.target.value);
-                });
-            }
-
-            // FAQ Accordion Toggle
-            const faqItems = document.querySelectorAll('.faq-item');
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question');
-                if (question) {
-                    question.addEventListener('click', () => {
-                        const answer = item.querySelector('.faq-answer');
-                        const isOpen = answer.classList.contains('hidden');
-                        
-                        faqItems.forEach(otherItem => {
-                            if (otherItem !== item) {
-                                const otherAnswer = otherItem.querySelector('.faq-answer');
-                                const otherIcon = otherItem.querySelector('.faq-icon');
-                                if (otherAnswer) {
-                                    otherAnswer.classList.add('hidden');
-                                }
-                                if (otherIcon) {
-                                    otherIcon.classList.remove('rotate-180');
-                                }
-                            }
-                        });
-                        
-                        if (answer) {
-                            answer.classList.toggle('hidden');
-                        }
-                        const icon = item.querySelector('.faq-icon');
-                        if (icon) {
-                            icon.classList.toggle('rotate-180');
-                        }
-                    });
-                }
-            });
-
-            // Smooth Scroll for Anchor Links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    if (href !== '#' && href.length > 1) {
-                        e.preventDefault();
-                        const target = document.querySelector(href);
+                    marker.bindPopup
