@@ -1111,4 +1111,61 @@
             filteredBusinesses.forEach(business => {
                 if (business.latitude && business.longitude) {
                     const marker = L.marker([business.latitude, business.longitude]).addTo(map);
-                    marker.bindPopup
+                    const popupContent = `
+                        <div class="p-2">
+                            <h4 class="font-bold text-primary mb-1">${business.name || 'Sin nombre'}</h4>
+                            <p class="text-xs text-gray-600 mb-2">${business.category || 'Sin categoría'}</p>
+                            <p class="text-xs mb-1"><strong>Dirección:</strong> ${business.full_address || 'Sin dirección'}</p>
+                            ${business.phone ? `<p class="text-xs mb-1"><strong>Tel:</strong> <a href="tel:${business.phone}" class="text-primary">${business.phone}</a></p>` : ''}
+                            ${business.rating ? `<p class="text-xs"><strong>Calificación:</strong> ${business.rating}⭐</p>` : ''}
+                        </div>
+                    `;
+                    marker.bindPopup(popupContent);
+                    markers.push(marker);
+                }
+            });
+        }
+
+        // Clear all markers from map
+        function clearMarkers() {
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+        }
+
+        // Update markers based on filtered businesses
+        function updateMarkersOnMap() {
+            displayMarkersOnMap();
+        }
+
+        // Add event listeners
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchBusinesses(e.target.value);
+        });
+
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.toggle('hidden');
+        });
+
+        // FAQ accordion
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const answer = this.querySelector('.faq-answer');
+                const icon = this.querySelector('.faq-icon');
+                
+                document.querySelectorAll('.faq-item').forEach(otherItem => {
+                    if (otherItem !== this) {
+                        otherItem.querySelector('.faq-answer').classList.add('hidden');
+                        otherItem.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
+                    }
+                });
+                
+                answer.classList.toggle('hidden');
+                icon.style.transform = answer.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            });
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+            loadBusinesses();
