@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog de Directorio Local - Descubre artículos sobre cómo elegir negocios locales, consejos de consumidor y estrategias para encontrar los mejores servicios">
+    <meta name="keywords" content="blog negocios locales, guía consumidor, reseñas negocios, directorio local, consejos comerciales">
+    <meta name="author" content="Directorio Local">
+    <meta property="og:title" content="Blog - Directorio de Negocios">
+    <meta property="og:description" content="Artículos informativos sobre cómo elegir y descubrir los mejores negocios locales">
+    <meta property="og:type" content="website">
+    <title>Blog - Directorio de Negocios | Descubre negocios localmente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9ff;
+        }
+        
+        .primary-color {
+            color: #5B4BFF;
+        }
+        
+        .bg-primary {
+            background-color: #5B4BFF;
+        }
+        
+        .bg-secondary {
+            background-color: #EEF0FF;
+        }
+        
+        .accent-color {
+            color: #00E5A8;
+        }
+        
+        .bg-accent {
+            background-color: #00E5A8;
+        }
+        
+        .btn-primary {
+            background-color: #5B4BFF;
+            color: white;
+            border-radius: 9999px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease-out;
+            display: inline-block;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            filter: brightness(1.1);
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(91, 75, 255, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        
+        .card-soft {
+            border-radius: 1rem;
+            transition: all 0.3s ease-out;
+        }
+        
+        .card-soft:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gradient-primary {
+            background: linear-gradient(135deg, #5B4BFF 0%, #7B68FF 100%);
+        }
+        
+        .gradient-accent {
+            background: linear-gradient(135deg, #00E5A8 0%, #00D99F 100%);
+        }
+        
+        .faq-icon {
+            transition: transform 0.3s ease-out;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease-out;
+        }
+        
+        .faq-answer.open {
+            max-height: 500px;
+        }
+        
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(91, 75, 255, 0.95) 0%, rgba(123, 104, 255, 0.95) 100%);
+        }
+        
+        .feature-icon {
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #EEF0FF;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .star-rating {
+            color: #FFD700;
+        }
+        
+        .blog-excerpt {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="smooth-scroll">
+    <!-- Header Navigation -->
+    <header class="w-full">
+        <nav class="max-w-7xl mx-auto px-8 md:px-16 py-6 flex justify-between items-center">
+            <a href="https://RonAdames.github.io/directorio-de-negocios-2025-11-22-l96x6" class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                    <i class="fas fa-map-marker-alt text-white text-lg"></i>
+                </div>
+                <span class="text-2xl font-bold primary-color">DirectorioLocal</span>
+            </a>
+            
+            <a href="https://RonAdames.github.io/directorio-de-negocios-2025-11-22-l96x6" class="text-gray-700 hover:primary-color transition-colors duration-300 font-medium">
+                ← Back
+            </a>
+        </nav>
+    </header>
+
+    <!-- Blog Header Section -->
+    <section class="relative w-full py-20 md:py-28 overflow-hidden">
+        <div class="absolute inset-0 hero-overlay"></div>
+        <div class="absolute inset-0 opacity-10">
+            <svg class="w-full h-full" viewBox="0 0 1200 600" preserveAspectRatio="none">
+                <defs>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+                <rect width="1200" height="600" fill="url(#grid)" />
+            </svg>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-8 md:px-16 text-center">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight tracking-tight">
+                Nuestro Blog
+            </h1>
+            <p class="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
+                Descubre artículos informativos, consejos prácticos y guías completas para ayudarte a tomar decisiones inteligentes al elegir negocios locales
+            </p>
+        </div>
+    </section>
+
+    <!-- Blog Purpose Section -->
+    <section class="w-full py-16 md:py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-8 md:px-16">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold primary-color mb-6 tracking-tight">
+                    Contenido Curado para Consumidores Inteligentes
+                </h2>
+                <p class="text-gray-700 text-lg leading-relaxed mb-4">
+                    En el Blog de Directorio Local, nos dedicamos a proporcionar información valiosa y práctica que te ayude a navegar el mundo de los negocios locales con confianza. Nuestros artículos cubren una amplia gama de temas diseñados para empoderar a consumidores como tú.
+                </p>
+                <p class="text-gray-700 text-lg leading-relaxed">
+                    Desde guías sobre cómo elegir el negocio perfecto hasta consejos sobre cómo leer reseñas de manera efectiva, pasando por estrategias para verificar la credibilidad de empresas locales, encontrarás todo lo que necesitas para tomar decisiones informadas y seguras en nuestro directorio.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Blog Post -->
+    <section class="w-full py-16 md:py-24 bg-secondary">
+        <div class="max-w-4xl mx-auto px-8 md:px-16">
+            <h2 class="text-3xl md:text-4xl font-bold primary-color mb-12 tracking-tight">
+                Artículo Destacado
+            </h2>
+            
+            <div class="card-soft bg-white p-8 md:p-12 shadow-lg">
+                <div class="mb-6">
+                    <span class="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                        22 de Noviembre, 2025
+                    </span>
+                </div>
+                
+                <h3 class="text-3xl md:text-4xl font-bold primary-color mb-6 leading-tight">
+                    Cómo Elegir el Mejor Negocio Local: Guía Completa para Consumidores Inteligentes
+                </h3>
+                
+                <div class="mb-8 pb-8 border-b border-gray-200">
+                    <p class="text-gray-700 text-lg leading-relaxed mb-4">
+                        Elegir el negocio local correcto no tiene que ser abrumador. Esta guía completa te equipa con estrategias esenciales para tomar decisiones informadas. Aprende a definir claramente tus necesidades, aprovecha plataformas de directorio confiables como DirectorioLocal, y analiza reseñas de manera inteligente identificando patrones en lugar de casos aislados.
+                    </p>
+                    
+                    <p class="text-gray-700 text-lg leading-relaxed mb-4">
+                        Verifica la credibilidad empresarial a través de múltiples plataformas y certificaciones, compara opciones sistemáticamente, y confía en tu instinto. La guía enfatiza la importancia de verificar información de contacto, investigar la reputación a fondo, y realizar visitas de prueba antes de comprometerte completamente.
+                    </p>
+                    
+                    <p class="text-gray-700 text-lg leading-relaxed">
+                        Al combinar investigación exhaustiva con buen juicio personal, descubrirás con confianza negocios locales que cumplan tus expectativas y proporcionen valor genuino a tu comunidad.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                    <div class="text-gray-600 text-sm">
+                        <p class="font-semibold">Tiempo de lectura: 8 minutos</p>
+                    </div>
+                    <a href="https://RonAdames.github.io/directorio-de-negocios-2025-11-22-l96x6/blog/c-mo-elegir-el-mejor-negocio-local-gu-a-completa-p.html" class="btn-primary">
+                        Leer Artículo Completo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Posts Grid -->
+    <section class="w-full py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-8 md:px-16">
+            <h2 class="text-3xl md:text-4xl font-bold primary-color mb-12 tracking-tight">
+                Más Artículos
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+                <!-- Placeholder for future blog posts -->
+                <div class="card-soft bg-secondary p-8 md:p-10 flex flex-col justify-center items-center text-center min-h-80">
+                    <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C6.5 6.253 2 10.998 2 17s4.5 10.747 10 10.747c5.5 0 10-4.998 10-10.747S17.5 6.253 12 6.253z" />
+                    </svg>
+                    <p class="text-gray-600 font-semibold">Próximamente</p>
+                    <p class="text-gray-500 text-sm mt-2">Estamos preparando más contenido valioso para ti</p>
+                </div>
+                
+                <div class="card-soft bg-secondary p-8 md:p-10 flex flex-col justify-center items-center text-center min-h-80">
+                    <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C6.5 6.253 2 10.998 2 17s4.5 10.747 10 10.747c5.5 0 10-4.998 10-10.747S17.5 6.253 12 6.253z" />
+                    </svg>
+                    <p class="text-gray-600 font-semibold">Próximamente</p>
+                    <p class="text-gray-500 text-sm mt-2">Estamos preparando más contenido valioso para ti</p>
+                </div>
+                
+                <div class="card-soft bg-secondary p-8 md:p-10 flex flex-col justify-center items-center text-center min-h-80">
+                    <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C6.5 6.253 2 10.998 2 17s4.5 10.747 10 10.747c5.5 0 10-4.998 10-10.747S17.5 6.253 12 6.253z" />
+                    </svg>
+                    <p class="text-gray-600 font-semibold">Próximamente</p>
+                    <p class="text-gray-500 text-sm mt-2">Estamos preparando más contenido valioso para ti</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="w-full py-20 md:py-32 relative overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=600&fit=crop" alt="Comunidad de negocios locales" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-indigo-600/90 to-indigo-500/80"></div>
+        </div>
+        
+        <div class="relative max-w-4xl mx-auto px-8 md:px-16 text-center">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 tracking-tight">
+                Descubre Negocios Locales Hoy
+            </h2>
+            <p class="text-lg md:text-xl text-white/90 mb-10 leading-relaxed">
+                Utiliza nuestro directorio para encontrar los mejores negocios locales en tu zona. Acceso gratuito, reseñas verificadas, resultados inmediatos.
+            </p>
+            <a href="https://RonAdames.github.io/directorio-de-negocios-2025-11-22-l96x6" class="btn-primary inline-block">
+                Explorar Directorio
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="w-full bg-gray-900 text-gray-300 py-16 md:py-20">
+        <div class="max-w-7xl mx-auto px-8 md:px-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 mb-12">
+                <!-- Company Info -->
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-map-marker-alt text-white text-lg"></i>
+                        </div>
+                        <span class="text-xl font-bold text-white">DirectorioLocal</span>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed mb-6">
+                        Tu plataforma confiable para descubrir y conectar con los mejores negocios locales en tu comunidad.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary transition-all duration-300">
+                            <i class="fab fa-facebook-f text-white"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary transition-all duration-300">
+                            <i class="fab fa-twitter text-white"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary transition-all duration-300">
+                            <i class="fab fa-instagram text-white"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary transition-all duration-300">
+                            <i class="fab fa-linkedin-in text-white"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold text-lg mb-6">Enlaces Rápidos</h4>
+                    <ul class="space-y-3">
+                        <li><a href="https://RonAdames.github.io/directorio-de-negocios-2025-11-22-l96x6" class="text-gray-400 hover:text-white transition-colors duration-300">Inicio</a></li>
+                        <li><a href="https://RonAdames.github.io/directorio-de-negocios-2025-11-22-l96x6#features" class="text-gray-400 hover:text-white transition-colors duration-300">Características</a></li>
+                        <li><a href="https://RonAdames.github.io/directorio-de-negocios-2025-11-22-l96x6#benefits" class="text-gray-400 hover:text-white transition-colors duration-300">Beneficios</a></li>
+                        <li><a href="https://RonAdames.github.io/directorio-de-negocios-2025-11-22-l96x6#faq" class="text-gray-400 hover:text-white transition-colors duration-300">Preguntas Frecuentes</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Legal -->
+                <div>
+                    <h4 class="text-white font-bold text-lg mb-6">Legal</h4>
+                    <ul class="space-y-3">
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors duration-300">Política de Privacidad</a></li>
+                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors duration-300">Términos de Servicio</a></li>
+                        <li><a href="blog.html" class="text-gray-400 hover:text-white transition-colors duration-300">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-white font-bold text-lg mb-6">Contacto</h4>
+                    <div class="space-y-4">
+                        <div class="flex gap-3">
+                            <i class="fas fa-envelope text-primary mt-1"></i>
+                            <div>
+                                <p class="text-gray-400 text-sm">Email</p>
+                                <a href="mailto:info@directoriolocal.com" class="text-white hover:text-primary transition-colors duration-300">info@directoriolocal.com</a>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <i class="fas fa-globe text-primary mt-1"></i>
+                            <div>
+                                <p class="text-gray-400 text-sm">Sitio Web</p>
+                                <a href="https://directoriolocal.com" class="text-white hover:text-primary transition-colors duration-300">directoriolocal.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Divider -->
+            <div class="border-t border-gray-800 pt-8 md:pt-12">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-gray-400 text-center md:text-left">
+                        &copy; 2025 Directorio Local. Todos los derechos reservados.
+                    </p>
+                    <p class="text-gray-400 text-sm text-center md:text-right">
+                        Hecho con <i class="fas fa-heart text-accent"></i> para conectar comunidades locales
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth Scroll for Anchor Links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href !== '#' && href.length > 1) {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
