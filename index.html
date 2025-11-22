@@ -1085,6 +1085,9 @@
                 if (business.email) contactHTML += `<p class="text-sm"><strong>Email:</strong> <a href="mailto:${business.email}" class="text-primary hover:underline">${business.email}</a></p>`;
                 if (business.site) contactHTML += `<p class="text-sm"><strong>Web:</strong> <a href="${business.site}" target="_blank" class="text-primary hover:underline">Visitar</a></p>`;
                 if (business.whatsapp_link) contactHTML += `<p class="text-sm"><strong>WhatsApp:</strong> <a href="${business.whatsapp_link}" target="_blank" class="text-primary hover:underline">Contactar</a></p>`;
+                if (business.facebook) contactHTML += `<p class="text-sm"><strong>Facebook:</strong> <a href="${business.facebook}" target="_blank" class="text-primary hover:underline">Visitar</a></p>`;
+                if (business.instagram) contactHTML += `<p class="text-sm"><strong>Instagram:</strong> <a href="${business.instagram}" target="_blank" class="text-primary hover:underline">Visitar</a></p>`;
+                if (business.linkedin) contactHTML += `<p class="text-sm"><strong>LinkedIn:</strong> <a href="${business.linkedin}" target="_blank" class="text-primary hover:underline">Visitar</a></p>`;
 
                 card.innerHTML = `
                     <div class="flex justify-between items-start mb-3">
@@ -1095,7 +1098,8 @@
                     </div>
                     <p class="text-sm text-gray-700 mb-3"><i class="fas fa-map-marker-alt text-primary mr-2"></i>${business.full_address || 'Sin dirección'}</p>
                     ${business.municipality ? `<p class="text-sm text-gray-600 mb-1"><strong>Municipio:</strong> ${business.municipality}</p>` : ''}
-                    ${business.province ? `<p class="text-sm text-gray-600 mb-3"><strong>Provincia:</strong> ${business.province}</p>` : ''}
+                    ${business.province ? `<p class="text-sm text-gray-600 mb-1"><strong>Provincia:</strong> ${business.province}</p>` : ''}
+                    ${business.rating ? `<p class="text-sm text-gray-600 mb-3"><strong>Calificación:</strong> ${business.rating}⭐</p>` : ''}
                     <div class="space-y-1 text-sm">
                         ${contactHTML}
                     </div>
@@ -1111,12 +1115,17 @@
             filteredBusinesses.forEach(business => {
                 if (business.latitude && business.longitude) {
                     const marker = L.marker([business.latitude, business.longitude]).addTo(map);
+                    let popupContactHTML = '';
+                    if (business.phone) popupContactHTML += `<p class="text-xs mb-1"><strong>Tel:</strong> <a href="tel:${business.phone}" class="text-primary">${business.phone}</a></p>`;
+                    if (business.email) popupContactHTML += `<p class="text-xs mb-1"><strong>Email:</strong> <a href="mailto:${business.email}" class="text-primary">${business.email}</a></p>`;
+                    if (business.whatsapp_link) popupContactHTML += `<p class="text-xs mb-1"><strong>WhatsApp:</strong> <a href="${business.whatsapp_link}" target="_blank" class="text-primary">Contactar</a></p>`;
+                    
                     const popupContent = `
                         <div class="p-2">
                             <h4 class="font-bold text-primary mb-1">${business.name || 'Sin nombre'}</h4>
                             <p class="text-xs text-gray-600 mb-2">${business.category || 'Sin categoría'}</p>
                             <p class="text-xs mb-1"><strong>Dirección:</strong> ${business.full_address || 'Sin dirección'}</p>
-                            ${business.phone ? `<p class="text-xs mb-1"><strong>Tel:</strong> <a href="tel:${business.phone}" class="text-primary">${business.phone}</a></p>` : ''}
+                            ${popupContactHTML}
                             ${business.rating ? `<p class="text-xs"><strong>Calificación:</strong> ${business.rating}⭐</p>` : ''}
                         </div>
                     `;
