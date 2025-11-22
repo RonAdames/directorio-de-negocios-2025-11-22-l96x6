@@ -1031,7 +1031,7 @@
                 document.getElementById('businessList').classList.remove('hidden');
             } catch (error) {
                 console.error('Error loading businesses:', error);
-                document.getElementById('loadingState').innerHTML = '<p class="text-red-600">Error al cargar los negocios. Asegúrate de que el archivo directory_data.json está en la raíz del proyecto.</p>';
+                document.getElementById('loadingState').innerHTML = '<p class="text-red-600">Error al cargar los negocios. Por favor, intenta más tarde.</p>';
             }
         }
 
@@ -1045,7 +1045,10 @@
                 btn.className = 'category-btn';
                 btn.textContent = category;
                 btn.dataset.category = category;
-                btn.addEventListener('click', () => filterByCategory(category, btn));
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    filterByCategory(category, btn);
+                });
                 filterContainer.appendChild(btn);
             });
         }
@@ -1119,11 +1122,6 @@
             applyAllFilters();
         }
 
-        // Search businesses
-        function searchBusinesses(query) {
-            applyAllFilters();
-        }
-
         // Display businesses in list
         function displayBusinesses() {
             const businessList = document.getElementById('businessList');
@@ -1139,15 +1137,4 @@
             noResults.classList.add('hidden');
             businessList.innerHTML = '';
 
-            filteredBusinesses.forEach(business => {
-                const card = document.createElement('div');
-                card.className = 'business-card bg-white rounded-lg shadow-md p-6 border-l-4 border-primary';
-                
-                let contactHTML = '';
-                if (business.phone) contactHTML += `<p class="text-sm"><strong>Tel:</strong> <a href="tel:${business.phone}" class="text-primary hover:underline">${business.phone}</a></p>`;
-                if (business.email) contactHTML += `<p class="text-sm"><strong>Email:</strong> <a href="mailto:${business.email}" class="text-primary hover:underline">${business.email}</a></p>`;
-                if (business.site) contactHTML += `<p class="text-sm"><strong>Web:</strong> <a href="${business.site}" target="_blank" class="text-primary hover:underline">Visitar</a></p>`;
-                if (business.whatsapp_link) contactHTML += `<p class="text-sm"><strong>WhatsApp:</strong> <a href="${business.whatsapp_link}" target="_blank" class="text-primary hover:underline">Contactar</a></p>`;
-                if (business.facebook) contactHTML += `<p class="text-sm"><strong>Facebook:</strong> <a href="${business.facebook}" target="_blank" class="text-primary hover:underline">Visitar</a></p>`;
-                if (business.instagram) contactHTML += `<p class="text-sm"><strong>Instagram:</strong> <a href="${business.instagram}" target="_blank" class="text-primary hover:underline">Visitar</a></p>`;
-                if (business.linkedin) contactHTML += `<p class="text-sm"><strong>LinkedIn:</strong> <a href="${business.linkedin}" target="_blank" class="text-primary hover:underline">Visitar</a></p>
+            filteredBusinesses
