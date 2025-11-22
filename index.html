@@ -965,12 +965,41 @@
             }, 100);
         }
 
-        // Load businesses from JSON
+        // Load businesses from Google Sheets
         async function loadBusinesses() {
             try {
-                const response = await fetch('directory_data.json');
-                if (!response.ok) throw new Error('Failed to load data');
-                businesses = await response.json();
+                const SHEET_ID = '1EtnQ7hFGMNOTPagnhGnkJu8x6CdD9mA32nlWtVNu9W4';
+                const SHEET_NAME = 'directorio';
+                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/query?key=AIzaSyDapr6qWvMlXqKJCNl5Qc5Yx-xB7kKPWXE&tq=SELECT%20*%20FROM%20'${SHEET_NAME}'`;
+                
+                const response = await fetch(url);
+                const text = await response.text();
+                
+                // Parse Google Visualization API response
+                const jsonData = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+                
+                // Convert Google Sheets data to business format
+                businesses = jsonData.table.rows.map(row => {
+                    const cols = row.c;
+                    return {
+                        name: cols[0]?.v || '',
+                        category: cols[1]?.v || '',
+                        province: cols[2]?.v || '',
+                        municipality: cols[3]?.v || '',
+                        address: cols[4]?.v || '',
+                        phone: cols[5]?.v || '',
+                        email: cols[6]?.v || '',
+                        site: cols[7]?.v || '',
+                        whatsapp_link: cols[8]?.v || '',
+                        facebook: cols[9]?.v || '',
+                        instagram: cols[10]?.v || '',
+                        linkedin: cols[11]?.v || '',
+                        latitude: cols[12]?.v ? parseFloat(cols[12].v) : 40.4168,
+                        longitude: cols[13]?.v ? parseFloat(cols[13].v) : -3.7038,
+                        rating: cols[14]?.v ? parseFloat(cols[14].v) : 5,
+                        description: cols[15]?.v || ''
+                    };
+                }).filter(business => business.name);
                 
                 // Extract unique categories, provinces, and municipalities
                 businesses.forEach(business => {
